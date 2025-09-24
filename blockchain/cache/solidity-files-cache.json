@@ -1,0 +1,271 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "D:\\mon_aid\\blockchain\\contracts\\BeneficiaryRegistry.sol": {
+      "lastModificationDate": 1758711629299,
+      "contentHash": "ed384ca1e678b94f137f2b79aab6faaf",
+      "sourceName": "contracts/BeneficiaryRegistry.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 2000
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "BeneficiaryRegistry",
+        "IGovernmentRegistry",
+        "IJuryStaking"
+      ]
+    },
+    "D:\\mon_aid\\blockchain\\contracts\\GovernmentRegistry.sol": {
+      "lastModificationDate": 1758711629294,
+      "contentHash": "60a4f175e2dd64aa3199c9c5e1a51ecd",
+      "sourceName": "contracts/GovernmentRegistry.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 2000
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "GovernmentRegistry",
+        "IERC165",
+        "IERC721"
+      ]
+    },
+    "D:\\mon_aid\\blockchain\\contracts\\JuryStaking.sol": {
+      "lastModificationDate": 1758711629299,
+      "contentHash": "28cc8de4d9116a4c3bb61b8644912294",
+      "sourceName": "contracts/JuryStaking.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 2000
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "JuryStaking"
+      ]
+    },
+    "D:\\mon_aid\\blockchain\\contracts\\MockUSD.sol": {
+      "lastModificationDate": 1758711811031,
+      "contentHash": "0e109d684e3ccfc66daa89f9a31d44c2",
+      "sourceName": "contracts/MockUSD.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 2000
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "MockUSD"
+      ]
+    },
+    "D:\\mon_aid\\blockchain\\contracts\\MonadRelief.sol": {
+      "lastModificationDate": 1758711061258,
+      "contentHash": "4120217d5cc57ed54353a2762fd55da4",
+      "sourceName": "contracts/MonadRelief.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 2000
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "MonadRelief"
+      ]
+    },
+    "D:\\mon_aid\\blockchain\\contracts\\MonadReliefERC20.sol": {
+      "lastModificationDate": 1758711811038,
+      "contentHash": "540a7b864f1a16e38be4aff4049b43bb",
+      "sourceName": "contracts/MonadReliefERC20.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 2000
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "IBeneficiaryRegistryErc20",
+        "IERC20",
+        "MonadReliefERC20"
+      ]
+    },
+    "D:\\mon_aid\\blockchain\\contracts\\MonadReliefV2.sol": {
+      "lastModificationDate": 1758711629299,
+      "contentHash": "503bc65c94b05e09e4d1e01e73d75b9b",
+      "sourceName": "contracts/MonadReliefV2.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 2000
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "IBeneficiaryRegistry",
+        "MonadReliefV2"
+      ]
+    }
+  }
+}

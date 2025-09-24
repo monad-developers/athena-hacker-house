@@ -1,0 +1,16 @@
+# Root ignore for Mon-Aid monorepo
+**/node_modules/
+**/.next/
+**/out/
+**/build/
+**/dist/
+**/coverage/
+**/.vercel/
+**/.turbo/
+**/*.tsbuildinfo
+**/.DS_Store
+.env*
+# Hardhat and artifacts
+**/artifacts/
+**/cache/
+**/typechain-types/
