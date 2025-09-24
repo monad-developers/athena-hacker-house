@@ -2,13 +2,15 @@
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useEffect, useState } from "react";
+import CameraWindow95 from "./CameraWindow95";
 
 export default function Page() {
   const wallpaperUrl = "https://ih1.redbubble.net/image.2287184997.2100/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg";
-  const [winState, setWinState] = useState("open"); // open | minimized | closed
+  const [winState, setWinState] = useState("closed"); // open | minimized | closed
   const [startMenuOpen, setStartMenuOpen] = useState(false);
   const [sliderValue, setSliderValue] = useState(0);
   const [monAmount, setMonAmount] = useState("100");
+  const [showCamera, setShowCamera] = useState(false);
 
   return (
     <ConnectButton.Custom>
@@ -63,7 +65,15 @@ export default function Page() {
                     unit="in"
                   />
                   <div style={{ display: "flex", justifyContent: "center", marginTop: 20 }}>
-                    <Button95 disabled={sliderValue === 0} style={{ padding: "8px 24px", fontSize: 14, fontWeight: "bold" }}>
+                    <Button95 
+                      disabled={sliderValue === 0} 
+                      style={{ padding: "8px 24px", fontSize: 14, fontWeight: "bold" }}
+                      onClick={() => {
+                        if (sliderValue > 6) {
+                          setShowCamera(true);
+                        }
+                      }}
+                    >
                       Swap
                     </Button95>
                   </div>
@@ -72,6 +82,7 @@ export default function Page() {
             )}
 
             {startMenuOpen && <StartMenu95 onMenuItemClick={() => setStartMenuOpen(false)} />}
+            {showCamera && <CameraWindow95 onClose={() => setShowCamera(false)} />}
             <Taskbar95
               activeTitle="Dickswap"
               showButton={winState !== "closed"}
@@ -210,11 +221,12 @@ function TitleBarButton({ label, danger, onClick }) {
   );
 }
 
-function Button95({ children, disabled, style = {} }) {
+function Button95({ children, disabled, style = {}, onClick }) {
   return (
     <button
       type="button"
       disabled={disabled}
+      onClick={onClick}
       style={{
         background: disabled ? "#e0e0e0" : "#f5d5e5",
         color: "#000",
