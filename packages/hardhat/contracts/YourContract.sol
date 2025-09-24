@@ -1,78 +1,98 @@
-//SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0 <0.9.0;
+// SPDX-License-Identifier: MIT
 
-// Useful for debugging. Remove when deploying to a live network.
-import "hardhat/console.sol";
+pragma solidity 0.8.20;
 
-// Use openzeppelin to inherit battle-tested implementations (ERC20, ERC721, etc)
-// import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/utils/math/Math.sol";
 
-/**
- * A smart contract that allows changing a state variable of the contract and tracking the changes
- * It also allows the owner to withdraw the Ether in the contract
- * @author BuidlGuidl
- */
-contract YourContract {
-    // State Variables
-    address public immutable owner;
-    string public greeting = "Building Unstoppable Apps!!!";
-    bool public premium = false;
-    uint256 public totalCounter = 0;
-    mapping(address => uint) public userGreetingCounter;
+contract BondingCurvePool is ERC20 {
+    using Math for uint256;
 
-    // Events: a way to emit log statements from smart contract that can be listened to by external parties
-    event GreetingChange(address indexed greetingSetter, string newGreeting, bool premium, uint256 value);
+    uint256 public reserveBalance;
+    uint256 public reserveRatio; 
+    
+    event TokensPurchased(address indexed buyer, uint256 amountEth, uint256 amountTokens);
+    event TokensSold(address indexed seller, uint256 amountTokens, uint256 amountEth);
 
-    // Constructor: Called once on contract deployment
-    // Check packages/hardhat/deploy/00_deploy_your_contract.ts
-    constructor(address _owner) {
-        owner = _owner;
+    constructor(
+        string memory name,
+        string memory symbol,
+        uint256 _reserveRatio
+    ) ERC20(name, symbol) {
+        require(_reserveRatio > 0 && _reserveRatio <= 100, "Reserve ratio must be between 1-100");
+        reserveRatio = _reserveRatio;
     }
 
-    // Modifier: used to define a set of rules that must be met before or after a function is executed
-    // Check the withdraw() function
-    modifier isOwner() {
-        // msg.sender: predefined variable that represents address of the account that called the current function
-        require(msg.sender == owner, "Not the Owner");
-        _;
+    function calculateCurrentPrice() public view returns (uint256) {
+        if (totalSupply() == 0) {
+            return 1e15; // Initial price of 0.001 ETH per token
+        }
+        
+        return (reserveBalance * 1e18) / (totalSupply() * reserveRatio / 100);
     }
 
-    /**
-     * Function that allows anyone to change the state variable "greeting" of the contract and increase the counters
-     *
-     * @param _newGreeting (string memory) - new greeting to save on the contract
-     */
-    function setGreeting(string memory _newGreeting) public payable {
-        // Print data to the hardhat chain console. Remove when deploying to a live network.
-        console.log("Setting new greeting '%s' from %s", _newGreeting, msg.sender);
-
-        // Change state variables
-        greeting = _newGreeting;
-        totalCounter += 1;
-        userGreetingCounter[msg.sender] += 1;
-
-        // msg.value: built-in global variable that represents the amount of ether sent with the transaction
-        if (msg.value > 0) {
-            premium = true;
-        } else {
-            premium = false;
+    // Calculate how many tokens will be minted for a given ETH amount
+    function calculateBuyReturn(uint256 ethAmount) public view returns (uint256) {
+        if (totalSupply() == 0) {
+            return ethAmount * 1e3; // Initial exchange rate
         }
 
-        // emit: keyword used to trigger an event
-        emit GreetingChange(msg.sender, _newGreeting, msg.value > 0, msg.value);
+        uint256 currentSupply = totalSupply();
+        uint256 currentReserve = reserveBalance;
+        
+        // Formula: supply * ((1 + deposit/reserve)^(reserveRatio/100) - 1)
+        // We simplify for small purchases: tokens = deposit * supply / (reserve * reserveRatio/100)
+        return (ethAmount * currentSupply) / (currentReserve * reserveRatio / 100);
     }
 
-    /**
-     * Function that allows the owner to withdraw all the Ether in the contract
-     * The function can only be called by the owner of the contract as defined by the isOwner modifier
-     */
-    function withdraw() public isOwner {
-        (bool success, ) = owner.call{ value: address(this).balance }("");
-        require(success, "Failed to send Ether");
+    // Calculate how much ETH will be returned for a given token amount
+    function calculateSellReturn(uint256 tokenAmount) public view returns (uint256) {
+        require(totalSupply() > 0, "No tokens in circulation");
+        require(tokenAmount <= totalSupply(), "Not enough tokens in circulation");
+        
+        uint256 currentSupply = totalSupply();
+        uint256 currentReserve = reserveBalance;
+        
+        // Formula: reserve * (1 - (1 - tokenAmount/supply)^(100/reserveRatio))
+        // We simplify for small sales: eth = tokens * reserve * reserveRatio/100 / supply
+        return (tokenAmount * currentReserve * reserveRatio / 100) / currentSupply;
     }
 
-    /**
-     * Function that allows the contract to receive ETH
-     */
-    receive() external payable {}
+    // Buy tokens with ETH
+    function buy() public payable {
+        require(msg.value > 0, "Must send ETH to buy tokens");
+        
+        uint256 tokensToMint = calculateBuyReturn(msg.value);
+        require(tokensToMint > 0, "Not enough ETH sent");
+        
+        reserveBalance += msg.value;
+        _mint(msg.sender, tokensToMint);
+        
+        emit TokensPurchased(msg.sender, msg.value, tokensToMint);
+    }
+
+    // Sell tokens to get ETH back
+    function sell(uint256 tokenAmount) public {
+        require(tokenAmount > 0, "Must sell more than 0 tokens");
+        require(balanceOf(msg.sender) >= tokenAmount, "Not enough tokens to sell");   
+        uint256 ethToReturn = calculateSellReturn(tokenAmount);
+        require(ethToReturn > 0, "Not enough tokens to receive ETH");
+        require(ethToReturn <= address(this).balance, "Contract has insufficient ETH");
+        
+        _burn(msg.sender, tokenAmount);
+        reserveBalance -= ethToReturn;
+        payable(msg.sender).transfer(ethToReturn);
+        
+        emit TokensSold(msg.sender, tokenAmount, ethToReturn);
+    }
+    
+    // Fallback function to handle ETH transfers
+    receive() external payable {
+        // Auto-buy tokens when ETH is sent to the contract
+        if (msg.sender != address(0)) {
+            buy();
+        } else {
+            reserveBalance += msg.value;
+        }
+    }
 }
