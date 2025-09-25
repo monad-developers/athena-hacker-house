@@ -264,7 +264,7 @@ function SuccessWindow({ onClose }) {
 }
 
 export default function Page() {
-  const wallpaperUrl = "https://ih1.redbubble.net/image.2287184997.2100/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg";
+  const wallpaperUrl = "/ksi.jpg";
   const [winState, setWinState] = useState("closed"); // open | minimized | closed
   const [startMenuOpen, setStartMenuOpen] = useState(false);
   const [sliderValue, setSliderValue] = useState(0);
@@ -860,7 +860,7 @@ function CornInterface95() {
         borderRadius: 4
     }}>
         <img 
-          src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2FkeGE5c3dzamFhd2hzdWY3NTl6cjZsZWtudmV1ZnZhamR3cnBmbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/EHQvTHs3r8eSQyL8R1/giphy.gif"
+          src="/bootyshake.gif"
           alt="Corn GIF"
           style={{
             maxWidth: "100%",
