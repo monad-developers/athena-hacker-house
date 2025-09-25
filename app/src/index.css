@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+/* App-wide base tweaks */
+html, body, #root {
+  height: 100%;
+}
+
+/* Playful dating-app vibe */
+:root {
+  --glass-bg: 255 255 255 / 0.06;
+  --glass-border: 255 255 255 / 0.12;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Inter", "Poppins", "Nunito", "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  background: radial-gradient(1200px 600px at 10% -10%, rgba(255, 87, 162, 0.22), rgba(255, 87, 162, 0) 60%),
+              radial-gradient(1200px 600px at 110% 10%, rgba(120, 119, 255, 0.22), rgba(120, 119, 255, 0) 60%),
+              linear-gradient(180deg, #0a0a0a 0%, #0c0c12 100%);
+  color: #e7e7ea;
+}
+
+.glass {
+  background: rgba(var(--glass-bg));
+  border: 1px solid rgba(var(--glass-border));
+  backdrop-filter: blur(10px);
+}
+
+.glass-noblur {
+  background: rgba(var(--glass-bg));
+  border: 1px solid rgba(var(--glass-border));
+}
+
+.pill {
+  border-radius: 9999px;
+}
+
+.btn-glow-red {
+  box-shadow: 0 0 20px rgba(255, 80, 110, 0.35);
+}
+.btn-glow-blue {
+  box-shadow: 0 0 20px rgba(80, 160, 255, 0.35);
+}
+.btn-glow-pink {
+  box-shadow: 0 0 20px rgba(255, 120, 200, 0.4);
+}
+
+.floating-icons::before {
+  content: "";
+  position: absolute;
+  inset: -50px;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.06) 0 2px, transparent 3px),
+    radial-gradient(circle at 60% 70%, rgba(255,255,255,0.05) 0 2px, transparent 3px),
+    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.05) 0 2px, transparent 3px);
+  background-size: 180px 180px, 220px 220px, 260px 260px;
+  filter: blur(0.5px);
+  pointer-events: none;
+}
