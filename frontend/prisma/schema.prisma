@@ -1,0 +1,198 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String   @id @default(cuid())
+  walletAddress   String   @unique @map("wallet_address")
+  nickname        String   @unique
+  totalTokens     Decimal  @default(0) @map("total_tokens") @db.Decimal(18, 8)
+  qrCodesScanned  Int      @default(0) @map("qr_codes_scanned") // Count of successfully scanned QRs
+  currentPhase    GamePhase @default(PHASE_1) @map("current_phase") // Current game phase
+  lastScannedAt   DateTime? @map("last_scanned_at") // When user last scanned a QR
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  scannedQRs      UserQRScan[]
+  swapOpportunities SwapOpportunity[]
+  swapTransactions  SwapTransaction[]
+
+  @@map("users")
+}
+
+
+model QRCode {
+  id            String     @id @default(cuid())
+  code          String     @unique // The actual QR code content/hash
+  name          String     // Descriptive name for the QR code
+  phase         GamePhase  // Game phase this QR belongs to
+  sequenceOrder Int        @map("sequence_order") // Order within the phase (1-8 for phase 1, etc.)
+  rarity        QRRarity   @default(NORMAL)
+  tokenReward   Decimal    @map("token_reward") @db.Decimal(18, 8)
+  isActive      Boolean    @default(true) @map("is_active")
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+  
+  // Relations
+  scannedBy     UserQRScan[]
+  hint          Hint? // One-to-one relation with hint
+  
+  @@map("qr_codes")
+}
+
+model Hint {
+  id        String   @id @default(cuid())
+  content   String   // The actual hint text
+  title     String?  // Optional hint title
+  
+  // Foreign key
+  qrCodeId  String   @unique @map("qr_code_id")
+  
+  // Relations
+  qrCode    QRCode   @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
+  
+  @@map("hints")
+}
+
+// User QR Scan tracking - many-to-many relationship between users and QR codes
+model UserQRScan {
+  id           String   @id @default(cuid())
+  userId       String   @map("user_id")
+  qrCodeId     String   @map("qr_code_id")
+  tokensEarned Decimal  @map("tokens_earned") @db.Decimal(18, 8)
+  scannedAt    DateTime @default(now()) @map("scanned_at")
+  
+  // Token transfer tracking
+  transactionHash String?  @map("transaction_hash")
+  transferStatus  TransferStatus @default(PENDING) @map("transfer_status")
+  transferredAt   DateTime? @map("transferred_at")
+  gasUsed         String?   @map("gas_used")
+  
+  // Relations
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  qrCode       QRCode   @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
+  swapOpportunity SwapOpportunity?
+  
+  @@unique([userId, qrCodeId]) // Each user can scan each QR code only once
+  @@map("user_qr_scans")
+}
+
+
+model LeaderboardEntry {
+  id              String   @id @default(cuid())
+  userId          String   @map("user_id")
+  nickname        String
+  totalTokens     Decimal  @map("total_tokens") @db.Decimal(18, 8)
+  qrCodesScanned  Int      @map("qr_codes_scanned")
+  rareQRsScanned  Int      @map("rare_qrs_scanned")
+  legendaryQRsScanned Int  @map("legendary_qrs_scanned")
+  lastScanAt      DateTime? @map("last_scan_at")
+  rank            Int?
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  
+  @@unique([userId])
+  @@map("leaderboard")
+}
+
+
+enum QRRarity {
+  NORMAL
+  RARE
+  LEGENDARY
+  
+  @@map("qr_rarity")
+}
+
+enum GamePhase {
+  PHASE_1
+  PHASE_2
+  PHASE_3
+  
+  @@map("game_phase")
+}
+
+enum TransferStatus {
+  PENDING     // Transfer queued
+  PROCESSING  // Transaction sent to blockchain
+  CONFIRMED   // Transaction confirmed on blockchain
+  FAILED      // Transaction failed
+
+  @@map("transfer_status")
+}
+
+// Swap opportunities (linked to successful QR scans)
+model SwapOpportunity {
+  id              String   @id @default(cuid())
+  userId          String   @map("user_id")
+  qrScanId        String   @unique @map("qr_scan_id") // Links to UserQRScan
+  isUsed          Boolean  @default(false) @map("is_used")
+  expiresAt       DateTime @map("expires_at") // 24-hour expiry
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  qrScan          UserQRScan @relation(fields: [qrScanId], references: [id], onDelete: Cascade)
+  swapTransactions SwapTransaction[]
+
+  @@map("swap_opportunities")
+}
+
+// Swap transaction tracking
+model SwapTransaction {
+  id                String @id @default(cuid())
+  userId            String @map("user_id") // Direct user reference for easier queries
+  swapOpportunityId String @map("swap_opportunity_id")
+
+  // Token details
+  sellToken         String @map("sell_token") // Contract address
+  sellTokenSymbol   String @map("sell_token_symbol") // For display
+  buyToken          String @map("buy_token")  // Contract address
+  buyTokenSymbol    String @map("buy_token_symbol") // For display
+  sellAmount        String @map("sell_amount") // Wei amount as string
+  buyAmount         String @map("buy_amount")  // Expected buy amount as string
+  actualBuyAmount   String? @map("actual_buy_amount") // Actual received amount
+
+  // Transaction tracking (similar to existing UserQRScan pattern)
+  transactionHash   String? @map("transaction_hash")
+  status            SwapStatus @default(PENDING)
+  gasUsed           String? @map("gas_used")
+
+  // 0x API specific data
+  zeroXQuoteId      String? @map("zerox_quote_id")
+  zeroXFees         Json? @map("zerox_fees") // Store fee breakdown as JSON
+  slippageBps       Int? @map("slippage_bps") // Slippage in basis points
+
+  // Timestamps (following your existing pattern)
+  createdAt         DateTime @default(now()) @map("created_at")
+  executedAt        DateTime? @map("executed_at") // When transaction was sent
+  confirmedAt       DateTime? @map("confirmed_at") // When confirmed on chain
+
+  // Relations
+  user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  swapOpportunity   SwapOpportunity @relation(fields: [swapOpportunityId], references: [id], onDelete: Cascade)
+
+  @@map("swap_transactions")
+}
+
+// Swap status enum (following your TransferStatus pattern)
+enum SwapStatus {
+  PENDING         // Swap opportunity created
+  QUOTE_FETCHED   // Got quote from 0x API
+  ALLOWANCE_SET   // Token allowance approved (if needed)
+  TRANSACTION_SENT // Transaction submitted to blockchain
+  CONFIRMED       // Transaction confirmed on blockchain
+  FAILED          // Transaction failed
+  EXPIRED         // Opportunity expired unused
+
+  @@map("swap_status")
+}

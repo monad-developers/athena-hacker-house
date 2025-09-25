@@ -1,0 +1,172 @@
+{
+  "generatedAt": "2025-09-22T21:35:17.434Z",
+  "totalCodes": 13,
+  "phases": {
+    "PHASE_1": 8,
+    "PHASE_2": 4,
+    "PHASE_3": 1
+  },
+  "rarities": {
+    "NORMAL": 8,
+    "RARE": 4,
+    "LEGENDARY": 1
+  },
+  "codes": [
+    {
+      "code": "MYSTERY_QR_001",
+      "name": "First Discovery",
+      "filename": "mystery_qr_001_phase_1_seq01",
+      "phase": "PHASE_1",
+      "rarity": "NORMAL",
+      "tokenReward": "100",
+      "hint": {
+        "title": "The Welcome Mat",
+        "content": "Where visitors first arrive, they probably have more than just room keys"
+      }
+    },
+    {
+      "code": "MYSTERY_QR_002",
+      "name": "Hidden Homes",
+      "filename": "mystery_qr_002_phase_1_seq02",
+      "phase": "PHASE_1",
+      "rarity": "NORMAL",
+      "tokenReward": "100",
+      "hint": {
+        "title": "Tiny Treasures",
+        "content": "Those little houses look sus... maybe check em out?"
+      }
+    },
+    {
+      "code": "MYSTERY_QR_003",
+      "name": "Aquatic Adventure",
+      "filename": "mystery_qr_003_phase_1_seq03",
+      "phase": "PHASE_1",
+      "rarity": "NORMAL",
+      "tokenReward": "100",
+      "hint": {
+        "title": "Splash Zone",
+        "content": "Go splash around the big pool, might find more than chlorine"
+      }
+    },
+    {
+      "code": "MYSTERY_QR_004",
+      "name": "Hunger Station",
+      "filename": "mystery_qr_004_phase_1_seq04",
+      "phase": "PHASE_1",
+      "rarity": "NORMAL",
+      "tokenReward": "100",
+      "hint": {
+        "title": "Feast Mode",
+        "content": "Grab some food and maybe grab something else too"
+      }
+    },
+    {
+      "code": "MYSTERY_QR_005",
+      "name": "Beat Drop Zone",
+      "filename": "mystery_qr_005_phase_1_seq05",
+      "phase": "PHASE_1",
+      "rarity": "NORMAL",
+      "tokenReward": "100",
+      "hint": {
+        "title": "Sound Waves",
+        "content": "Where the beats drop, tokens might drop too (near the big splash)"
+      }
+    },
+    {
+      "code": "MYSTERY_QR_006",
+      "name": "Central Command",
+      "filename": "mystery_qr_006_phase_1_seq06",
+      "phase": "PHASE_1",
+      "rarity": "NORMAL",
+      "tokenReward": "100",
+      "hint": {
+        "title": "All Roads Lead Here",
+        "content": "Where all roads lead..."
+      }
+    },
+    {
+      "code": "PHASE1_QR_007",
+      "name": "Mystery Location 7",
+      "filename": "phase1_qr_007_phase_1_seq07",
+      "phase": "PHASE_1",
+      "rarity": "NORMAL",
+      "tokenReward": "100",
+      "hint": {
+        "title": "Mystery Location 7",
+        "content": "Hint for location 7 will be revealed soon..."
+      }
+    },
+    {
+      "code": "PHASE1_QR_008",
+      "name": "Mystery Location 8",
+      "filename": "phase1_qr_008_phase_1_seq08",
+      "phase": "PHASE_1",
+      "rarity": "NORMAL",
+      "tokenReward": "100",
+      "hint": {
+        "title": "Mystery Location 8",
+        "content": "Hint for location 8 will be revealed soon..."
+      }
+    },
+    {
+      "code": "PHASE2_RARE_001",
+      "name": "Rare Location 1",
+      "filename": "phase2_rare_001_phase_2_seq01",
+      "phase": "PHASE_2",
+      "rarity": "RARE",
+      "tokenReward": "250",
+      "hint": {
+        "title": "Rare Location 1",
+        "content": "This rare location requires completing Phase 1 first..."
+      }
+    },
+    {
+      "code": "PHASE2_RARE_002",
+      "name": "Rare Location 2",
+      "filename": "phase2_rare_002_phase_2_seq02",
+      "phase": "PHASE_2",
+      "rarity": "RARE",
+      "tokenReward": "250",
+      "hint": {
+        "title": "Rare Location 2",
+        "content": "Another rare location awaits the dedicated hunters..."
+      }
+    },
+    {
+      "code": "PHASE2_RARE_003",
+      "name": "Rare Location 3",
+      "filename": "phase2_rare_003_phase_2_seq03",
+      "phase": "PHASE_2",
+      "rarity": "RARE",
+      "tokenReward": "250",
+      "hint": {
+        "title": "Rare Location 3",
+        "content": "The third rare location holds special secrets..."
+      }
+    },
+    {
+      "code": "PHASE2_RARE_004",
+      "name": "Rare Location 4",
+      "filename": "phase2_rare_004_phase_2_seq04",
+      "phase": "PHASE_2",
+      "rarity": "RARE",
+      "tokenReward": "250",
+      "hint": {
+        "title": "Rare Location 4",
+        "content": "The final rare location of Phase 2..."
+      }
+    },
+    {
+      "code": "PHASE3_LEGENDARY_001",
+      "name": "Legendary Location",
+      "filename": "phase3_legendary_001_phase_3_seq01",
+      "phase": "PHASE_3",
+      "rarity": "LEGENDARY",
+      "tokenReward": "500",
+      "hint": {
+        "title": "Legendary Location",
+        "content": "The legendary location will be revealed at the IRL event..."
+      }
+    }
+  ]
+}

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token Crunchies QR Codes</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .phase-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .phase-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #eee;
+            color: #333;
+        }
+        .qr-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+        }
+        .qr-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            background: #fafafa;
+            transition: transform 0.2s;
+        }
+        .qr-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .qr-image {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 16px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            padding: 8px;
+        }
+        .qr-title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .qr-code {
+            font-family: monospace;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 12px;
+            background: #f0f0f0;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .qr-details {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 12px;
+        }
+        .rarity {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 4px 0;
+            text-transform: uppercase;
+        }
+        .rarity.NORMAL {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        .rarity.RARE {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        .rarity.LEGENDARY {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        .hint {
+            background: #f0f8ff;
+            border-left: 4px solid #2196f3;
+            padding: 12px;
+            margin-top: 12px;
+            text-align: left;
+            font-size: 13px;
+            border-radius: 4px;
+        }
+        .hint-title {
+            font-weight: bold;
+            margin-bottom: 4px;
+            color: #1976d2;
+        }
+        .download-btn {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 12px;
+            margin: 4px;
+            transition: background 0.2s;
+        }
+        .download-btn:hover {
+            background: #45a049;
+        }
+        .stats {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .stat-card {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Token Crunchies QR Codes</h1>
+            <p>Generated on 9/23/2025, 3:05:17 AM</p>
+            <p><strong>13 QR codes</strong> across 3 phases</p>
+
+            <div class="stats">
+                <h3>📊 Overview</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">Phase 1 Codes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">4</div>
+                        <div class="stat-label">Phase 2 Codes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">1</div>
+                        <div class="stat-label">Phase 3 Codes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">Normal Codes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">4</div>
+                        <div class="stat-label">Rare Codes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">1</div>
+                        <div class="stat-label">Legendary Codes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="phase-section">
+            <div class="phase-title">
+                PHASE 1
+                (8 codes)
+            </div>
+            <div class="qr-grid">
+                
+                <div class="qr-card">
+                    <img src="png/mystery_qr_001_phase_1_seq01.png" alt="First Discovery" class="qr-image">
+                    <div class="qr-title">First Discovery</div>
+                    <div class="qr-code">MYSTERY_QR_001</div>
+                    <div class="qr-details">
+                        <div>Sequence: #1</div>
+                        <div>Reward: 100 tokens</div>
+                        <div class="rarity NORMAL">NORMAL</div>
+                    </div>
+                    
+                    <div class="hint">
+                        <div class="hint-title">The Welcome Mat</div>
+                        <div>Where visitors first arrive, they probably have more than just room keys</div>
+                    </div>
+                    
+                    <div style="margin-top: 12px;">
+                        <a href="png/mystery_qr_001_phase_1_seq01.png" download="mystery_qr_001_phase_1_seq01.png" class="download-btn">📥 PNG</a>
+                        <a href="svg/mystery_qr_001_phase_1_seq01.svg" download="mystery_qr_001_phase_1_seq01.svg" class="download-btn">🎨 SVG</a>
+                    </div>
+                </div>
+                
+                <div class="qr-card">
+                    <img src="png/mystery_qr_002_phase_1_seq02.png" alt="Hidden Homes" class="qr-image">
+                    <div class="qr-title">Hidden Homes</div>
+                    <div class="qr-code">MYSTERY_QR_002</div>
+                    <div class="qr-details">
+                        <div>Sequence: #2</div>
+                        <div>Reward: 100 tokens</div>
+                        <div class="rarity NORMAL">NORMAL</div>
+                    </div>
+                    
+                    <div class="hint">
+                        <div class="hint-title">Tiny Treasures</div>
+                        <div>Those little houses look sus... maybe check em out?</div>
+                    </div>
+                    
+                    <div style="margin-top: 12px;">
+                        <a href="png/mystery_qr_002_phase_1_seq02.png" download="mystery_qr_002_phase_1_seq02.png" class="download-btn">📥 PNG</a>
+                        <a href="svg/mystery_qr_002_phase_1_seq02.svg" download="mystery_qr_002_phase_1_seq02.svg" class="download-btn">🎨 SVG</a>
+                    </div>
+                </div>
+                
+                <div class="qr-card">
+                    <img src="png/mystery_qr_003_phase_1_seq03.png" alt="Aquatic Adventure" class="qr-image">
+                    <div class="qr-title">Aquatic Adventure</div>
+                    <div class="qr-code">MYSTERY_QR_003</div>
+                    <div class="qr-details">
+                        <div>Sequence: #3</div>
+                        <div>Reward: 100 tokens</div>
+                        <div class="rarity NORMAL">NORMAL</div>
+                    </div>
+                    
+                    <div class="hint">
+                        <div class="hint-title">Splash Zone</div>
+                        <div>Go splash around the big pool, might find more than chlorine</div>
+                    </div>
+                    
+                    <div style="margin-top: 12px;">
+                        <a href="png/mystery_qr_003_phase_1_seq03.png" download="mystery_qr_003_phase_1_seq03.png" class="download-btn">📥 PNG</a>
+                        <a href="svg/mystery_qr_003_phase_1_seq03.svg" download="mystery_qr_003_phase_1_seq03.svg" class="download-btn">🎨 SVG</a>
+                    </div>
+                </div>
+                
+                <div class="qr-card">
+                    <img src="png/mystery_qr_004_phase_1_seq04.png" alt="Hunger Station" class="qr-image">
+                    <div class="qr-title">Hunger Station</div>
+                    <div class="qr-code">MYSTERY_QR_004</div>
+                    <div class="qr-details">
+                        <div>Sequence: #4</div>
+                        <div>Reward: 100 tokens</div>
+                        <div class="rarity NORMAL">NORMAL</div>
+                    </div>
+                    
+                    <div class="hint">
+                        <div class="hint-title">Feast Mode</div>
+                        <div>Grab some food and maybe grab something else too</div>
+                    </div>
+                    
+                    <div style="margin-top: 12px;">
+                        <a href="png/mystery_qr_004_phase_1_seq04.png" download="mystery_qr_004_phase_1_seq04.png" class="download-btn">📥 PNG</a>
+                        <a href="svg/mystery_qr_004_phase_1_seq04.svg" download="mystery_qr_004_phase_1_seq04.svg" class="download-btn">🎨 SVG</a>
+                    </div>
+                </div>
+                
+                <div class="qr-card">
+                    <img src="png/mystery_qr_005_phase_1_seq05.png" alt="Beat Drop Zone" class="qr-image">
+                    <div class="qr-title">Beat Drop Zone</div>
+                    <div class="qr-code">MYSTERY_QR_005</div>
+                    <div class="qr-details">
+                        <div>Sequence: #5</div>
+                        <div>Reward: 100 tokens</div>
+                        <div class="rarity NORMAL">NORMAL</div>
+                    </div>
+                    
+                    <div class="hint">
+                        <div class="hint-title">Sound Waves</div>
+                        <div>Where the beats drop, tokens might drop too (near the big splash)</div>
+                    </div>
+                    
+                    <div style="margin-top: 12px;">
+                        <a href="png/mystery_qr_005_phase_1_seq05.png" download="mystery_qr_005_phase_1_seq05.png" class="download-btn">📥 PNG</a>
+                        <a href="svg/mystery_qr_005_phase_1_seq05.svg" download="mystery_qr_005_phase_1_seq05.svg" class="download-btn">🎨 SVG</a>
+                    </div>
+                </div>
+                
+                <div class="qr-card">
+                    <img src="png/mystery_qr_006_phase_1_seq06.png" alt="Central Command" class="qr-image">
+                    <div class="qr-title">Central Command</div>
+                    <div class="qr-code">MYSTERY_QR_006</div>
+                    <div class="qr-details">
+                        <div>Sequence: #6</div>
+                        <div>Reward: 100 tokens</div>
+                        <div class="rarity NORMAL">NORMAL</div>
+                    </div>
+                    
+                    <div class="hint">
+                        <div class="hint-title">All Roads Lead Here</div>
+                        <div>Where all roads lead...</div>
+                    </div>
+                    
+                    <div style="margin-top: 12px;">
+                        <a href="png/mystery_qr_006_phase_1_seq06.png" download="mystery_qr_006_phase_1_seq06.png" class="download-btn">📥 PNG</a>
+                        <a href="svg/mystery_qr_006_phase_1_seq06.svg" download="mystery_qr_006_phase_1_seq06.svg" class="download-btn">🎨 SVG</a>
+                    </div>
+                </div>
+                
+                <div class="qr-card">
+                    <img src="png/phase1_qr_007_phase_1_seq07.png" alt="Mystery Location 7" class="qr-image">
+                    <div class="qr-title">Mystery Location 7</div>
+                    <div class="qr-code">PHASE1_QR_007</div>
+                    <div class="qr-details">
+                        <div>Sequence: #7</div>
+                        <div>Reward: 100 tokens</div>
+                        <div class="rarity NORMAL">NORMAL</div>
+                    </div>
+                    
+                    <div class="hint">
+                        <div class="hint-title">Mystery Location 7</div>
+                        <div>Hint for location 7 will be revealed soon...</div>
+                    </div>
+                    
+                    <div style="margin-top: 12px;">
+                        <a href="png/phase1_qr_007_phase_1_seq07.png" download="phase1_qr_007_phase_1_seq07.png" class="download-btn">📥 PNG</a>
+                        <a href="svg/phase1_qr_007_phase_1_seq07.svg" download="phase1_qr_007_phase_1_seq07.svg" class="download-btn">🎨 SVG</a>
+                    </div>
+                </div>
+                
+                <div class="qr-card">
+                    <img src="png/phase1_qr_008_phase_1_seq08.png" alt="Mystery Location 8" class="qr-image">
+                    <div class="qr-title">Mystery Location 8</div>
+                    <div class="qr-code">PHASE1_QR_008</div>
+                    <div class="qr-details">
+                        <div>Sequence: #8</div>
+                        <div>Reward: 100 tokens</div>
+                        <div class="rarity NORMAL">NORMAL</div>
+                    </div>
+                    
+                    <div class="hint">
+                        <div class="hint-title">Mystery Location 8</div>
+                        <div>Hint for location 8 will be revealed soon...</div>
+                    </div>
+                    
+                    <div style="margin-top: 12px;">
+                        <a href="png/phase1_qr_008_phase_1_seq08.png" download="phase1_qr_008_phase_1_seq08.png" class="download-btn">📥 PNG</a>
+                        <a href="svg/phase1_qr_008_phase_1_seq08.svg" download="phase1_qr_008_phase_1_seq08.svg" class="download-btn">🎨 SVG</a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="phase-section">
+            <div class="phase-title">
+                PHASE 2
+                (4 codes)
+            </div>
+            <div class="qr-grid">
+                
+                <div class="qr-card">
+                    <img src="png/phase2_rare_001_phase_2_seq01.png" alt="Rare Location 1" class="qr-image">
+                    <div class="qr-title">Rare Location 1</div>
+                    <div class="qr-code">PHASE2_RARE_001</div>
+                    <div class="qr-details">
+                        <div>Sequence: #1</div>
+                        <div>Reward: 250 tokens</div>
+                        <div class="rarity RARE">RARE</div>
+                    </div>
+                    
+                    <div class="hint">
+                        <div class="hint-title">Rare Location 1</div>
+                        <div>This rare location requires completing Phase 1 first...</div>
+                    </div>
+                    
+                    <div style="margin-top: 12px;">
+                        <a href="png/phase2_rare_001_phase_2_seq01.png" download="phase2_rare_001_phase_2_seq01.png" class="download-btn">📥 PNG</a>
+                        <a href="svg/phase2_rare_001_phase_2_seq01.svg" download="phase2_rare_001_phase_2_seq01.svg" class="download-btn">🎨 SVG</a>
+                    </div>
+                </div>
+                
+                <div class="qr-card">
+                    <img src="png/phase2_rare_002_phase_2_seq02.png" alt="Rare Location 2" class="qr-image">
+                    <div class="qr-title">Rare Location 2</div>
+                    <div class="qr-code">PHASE2_RARE_002</div>
+                    <div class="qr-details">
+                        <div>Sequence: #2</div>
+                        <div>Reward: 250 tokens</div>
+                        <div class="rarity RARE">RARE</div>
+                    </div>
+                    
+                    <div class="hint">
+                        <div class="hint-title">Rare Location 2</div>
+                        <div>Another rare location awaits the dedicated hunters...</div>
+                    </div>
+                    
+                    <div style="margin-top: 12px;">
+                        <a href="png/phase2_rare_002_phase_2_seq02.png" download="phase2_rare_002_phase_2_seq02.png" class="download-btn">📥 PNG</a>
+                        <a href="svg/phase2_rare_002_phase_2_seq02.svg" download="phase2_rare_002_phase_2_seq02.svg" class="download-btn">🎨 SVG</a>
+                    </div>
+                </div>
+                
+                <div class="qr-card">
+                    <img src="png/phase2_rare_003_phase_2_seq03.png" alt="Rare Location 3" class="qr-image">
+                    <div class="qr-title">Rare Location 3</div>
+                    <div class="qr-code">PHASE2_RARE_003</div>
+                    <div class="qr-details">
+                        <div>Sequence: #3</div>
+                        <div>Reward: 250 tokens</div>
+                        <div class="rarity RARE">RARE</div>
+                    </div>
+                    
+                    <div class="hint">
+                        <div class="hint-title">Rare Location 3</div>
+                        <div>The third rare location holds special secrets...</div>
+                    </div>
+                    
+                    <div style="margin-top: 12px;">
+                        <a href="png/phase2_rare_003_phase_2_seq03.png" download="phase2_rare_003_phase_2_seq03.png" class="download-btn">📥 PNG</a>
+                        <a href="svg/phase2_rare_003_phase_2_seq03.svg" download="phase2_rare_003_phase_2_seq03.svg" class="download-btn">🎨 SVG</a>
+                    </div>
+                </div>
+                
+                <div class="qr-card">
+                    <img src="png/phase2_rare_004_phase_2_seq04.png" alt="Rare Location 4" class="qr-image">
+                    <div class="qr-title">Rare Location 4</div>
+                    <div class="qr-code">PHASE2_RARE_004</div>
+                    <div class="qr-details">
+                        <div>Sequence: #4</div>
+                        <div>Reward: 250 tokens</div>
+                        <div class="rarity RARE">RARE</div>
+                    </div>
+                    
+                    <div class="hint">
+                        <div class="hint-title">Rare Location 4</div>
+                        <div>The final rare location of Phase 2...</div>
+                    </div>
+                    
+                    <div style="margin-top: 12px;">
+                        <a href="png/phase2_rare_004_phase_2_seq04.png" download="phase2_rare_004_phase_2_seq04.png" class="download-btn">📥 PNG</a>
+                        <a href="svg/phase2_rare_004_phase_2_seq04.svg" download="phase2_rare_004_phase_2_seq04.svg" class="download-btn">🎨 SVG</a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="phase-section">
+            <div class="phase-title">
+                PHASE 3
+                (1 codes)
+            </div>
+            <div class="qr-grid">
+                
+                <div class="qr-card">
+                    <img src="png/phase3_legendary_001_phase_3_seq01.png" alt="Legendary Location" class="qr-image">
+                    <div class="qr-title">Legendary Location</div>
+                    <div class="qr-code">PHASE3_LEGENDARY_001</div>
+                    <div class="qr-details">
+                        <div>Sequence: #1</div>
+                        <div>Reward: 500 tokens</div>
+                        <div class="rarity LEGENDARY">LEGENDARY</div>
+                    </div>
+                    
+                    <div class="hint">
+                        <div class="hint-title">Legendary Location</div>
+                        <div>The legendary location will be revealed at the IRL event...</div>
+                    </div>
+                    
+                    <div style="margin-top: 12px;">
+                        <a href="png/phase3_legendary_001_phase_3_seq01.png" download="phase3_legendary_001_phase_3_seq01.png" class="download-btn">📥 PNG</a>
+                        <a href="svg/phase3_legendary_001_phase_3_seq01.svg" download="phase3_legendary_001_phase_3_seq01.svg" class="download-btn">🎨 SVG</a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

@@ -1,0 +1,184 @@
+[
+  {
+    "code": "BDP81LVO",
+    "name": "Check-in Counter",
+    "phase": "PHASE_1",
+    "sequenceOrder": 1,
+    "rarity": "NORMAL",
+    "tokenReward": "100",
+    "hint": "check in to check-out:eyes:",
+    "files": {
+      "png": "png/QR01_BDP81LVO.png",
+      "svg": "svg/QR01_BDP81LVO.svg"
+    },
+    "qrData": "BDP81LVO"
+  },
+  {
+    "code": "ZMGGWHJ8",
+    "name": "Suspicious Houses",
+    "phase": "PHASE_1",
+    "sequenceOrder": 2,
+    "rarity": "NORMAL",
+    "tokenReward": "100",
+    "hint": "those little houses look sus... maybe check em out?",
+    "files": {
+      "png": "png/QR02_ZMGGWHJ8.png",
+      "svg": "svg/QR02_ZMGGWHJ8.svg"
+    },
+    "qrData": "ZMGGWHJ8"
+  },
+  {
+    "code": "RE94UDOY",
+    "name": "Food Court Secret",
+    "phase": "PHASE_1",
+    "sequenceOrder": 3,
+    "rarity": "NORMAL",
+    "tokenReward": "100",
+    "hint": "grab some food and maybe grab something else too :eyes:",
+    "files": {
+      "png": "png/QR03_RE94UDOY.png",
+      "svg": "svg/QR03_RE94UDOY.svg"
+    },
+    "qrData": "RE94UDOY"
+  },
+  {
+    "code": "IC7G9DZ9",
+    "name": "Beat Drop Zone",
+    "phase": "PHASE_1",
+    "sequenceOrder": 4,
+    "rarity": "NORMAL",
+    "tokenReward": "100",
+    "hint": "where the beats drop, tokens might drop too :musical_note:",
+    "files": {
+      "png": "png/QR04_IC7G9DZ9.png",
+      "svg": "svg/QR04_IC7G9DZ9.svg"
+    },
+    "qrData": "IC7G9DZ9"
+  },
+  {
+    "code": "Y2KPHPIL",
+    "name": "Trail Convergence",
+    "phase": "PHASE_1",
+    "sequenceOrder": 5,
+    "rarity": "NORMAL",
+    "tokenReward": "100",
+    "hint": "All trails eventually crunch back here.",
+    "files": {
+      "png": "png/QR05_Y2KPHPIL.png",
+      "svg": "svg/QR05_Y2KPHPIL.svg"
+    },
+    "qrData": "Y2KPHPIL"
+  },
+  {
+    "code": "LTDVK0FR",
+    "name": "Ocean Splash",
+    "phase": "PHASE_1",
+    "sequenceOrder": 6,
+    "rarity": "NORMAL",
+    "tokenReward": "100",
+    "hint": "go splash around the ocean, might find more than salt",
+    "files": {
+      "png": "png/QR06_LTDVK0FR.png",
+      "svg": "svg/QR06_LTDVK0FR.svg"
+    },
+    "qrData": "LTDVK0FR"
+  },
+  {
+    "code": "M7R9H7IM",
+    "name": "Silent Pond Watcher",
+    "phase": "PHASE_1",
+    "sequenceOrder": 7,
+    "rarity": "NORMAL",
+    "tokenReward": "100",
+    "hint": "A silent pond watching from the sidelines",
+    "files": {
+      "png": "png/QR07_M7R9H7IM.png",
+      "svg": "svg/QR07_M7R9H7IM.svg"
+    },
+    "qrData": "M7R9H7IM"
+  },
+  {
+    "code": "T5FACUPG",
+    "name": "Silent Tails",
+    "phase": "PHASE_1",
+    "sequenceOrder": 8,
+    "rarity": "NORMAL",
+    "tokenReward": "100",
+    "hint": "Silent Tails",
+    "files": {
+      "png": "png/QR08_T5FACUPG.png",
+      "svg": "svg/QR08_T5FACUPG.svg"
+    },
+    "qrData": "T5FACUPG"
+  },
+  {
+    "code": "0SXJMMSP",
+    "name": "Floating Swimmer",
+    "phase": "PHASE_2",
+    "sequenceOrder": 9,
+    "rarity": "RARE",
+    "tokenReward": "250",
+    "hint": "A swimmer that only floats",
+    "files": {
+      "png": "png/QR09_0SXJMMSP.png",
+      "svg": "svg/QR09_0SXJMMSP.svg"
+    },
+    "qrData": "0SXJMMSP"
+  },
+  {
+    "code": "BB8HJW6Z",
+    "name": "Pocket Loot",
+    "phase": "PHASE_2",
+    "sequenceOrder": 10,
+    "rarity": "RARE",
+    "tokenReward": "250",
+    "hint": "The real loot might be ringing in someone's pocket",
+    "files": {
+      "png": "png/QR10_BB8HJW6Z.png",
+      "svg": "svg/QR10_BB8HJW6Z.svg"
+    },
+    "qrData": "BB8HJW6Z"
+  },
+  {
+    "code": "K9WN038C",
+    "name": "Godfather's Mercy",
+    "phase": "PHASE_2",
+    "sequenceOrder": 11,
+    "rarity": "RARE",
+    "tokenReward": "250",
+    "hint": "Ask Godfather, maybe he can show some mercy",
+    "files": {
+      "png": "png/QR11_K9WN038C.png",
+      "svg": "svg/QR11_K9WN038C.svg"
+    },
+    "qrData": "K9WN038C"
+  },
+  {
+    "code": "TU9KH6H8",
+    "name": "Supreme Secrets",
+    "phase": "PHASE_2",
+    "sequenceOrder": 12,
+    "rarity": "RARE",
+    "tokenReward": "250",
+    "hint": "Supreme leader knows supreme secrets",
+    "files": {
+      "png": "png/QR12_TU9KH6H8.png",
+      "svg": "svg/QR12_TU9KH6H8.svg"
+    },
+    "qrData": "TU9KH6H8"
+  },
+  {
+    "code": "BY1C6BJ3",
+    "name": "Legend Never Dies",
+    "phase": "PHASE_3",
+    "sequenceOrder": 13,
+    "rarity": "LEGENDARY",
+    "tokenReward": "500",
+    "hint": "Legend never dies",
+    "files": {
+      "png": "png/QR13_BY1C6BJ3.png",
+      "svg": "svg/QR13_BY1C6BJ3.svg"
+    },
+    "qrData": "BY1C6BJ3"
+  }
+]
