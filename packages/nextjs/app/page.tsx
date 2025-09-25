@@ -1,8 +1,6 @@
 "use client";
 
 import type { NextPage } from "next";
-import { useAccount } from "wagmi";
-import { Address } from "~~/components/scaffold-eth";
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
