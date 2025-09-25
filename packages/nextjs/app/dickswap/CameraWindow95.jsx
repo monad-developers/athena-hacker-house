@@ -7,6 +7,14 @@ export default function CameraWindow95({ onClose }) {
   const [stream, setStream] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showSequence, setShowSequence] = useState(false);
+  const [currentMessage, setCurrentMessage] = useState(0);
+  
+  const messages = [
+    "rendering video",
+    "verifying your size", 
+    "confirming results"
+  ];
 
   useEffect(() => {
     const startCamera = async () => {
@@ -21,6 +29,12 @@ export default function CameraWindow95({ onClose }) {
         }
         setStream(mediaStream);
         setIsLoading(false);
+        
+        // Start the sequence after camera loads
+        setTimeout(() => {
+          setShowSequence(true);
+        }, 1000);
+        
       } catch (err) {
         console.error("Camera access error:", err);
         setError("Camera access denied or not available");
@@ -36,6 +50,28 @@ export default function CameraWindow95({ onClose }) {
       }
     };
   }, []);
+
+  // Handle the 5-second sequence
+  useEffect(() => {
+    if (!showSequence) return;
+    
+    const intervals = [];
+    
+    // Change message every ~1.5 seconds
+    intervals.push(setTimeout(() => setCurrentMessage(1), 1500));
+    intervals.push(setTimeout(() => setCurrentMessage(2), 3000));
+    
+    // Close after 5 seconds and show notification
+    intervals.push(setTimeout(() => {
+      handleClose();
+      // Show notification after a brief delay
+      setTimeout(() => {
+        onClose("showNotification");
+      }, 200);
+    }, 5000));
+    
+    return () => intervals.forEach(clearTimeout);
+  }, [showSequence]);
 
   const handleClose = () => {
     if (stream) {
@@ -182,11 +218,66 @@ export default function CameraWindow95({ onClose }) {
                     }}
                   />
                 </div>
+                
+                {/* Sequence Messages */}
+                {showSequence && (
+                  <div style={{
+                    marginTop: 8,
+                    padding: 8,
+                    background: "#dcdcdc",
+                    border: "2px inset #a0a0a0",
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    fontSize: 11,
+                    fontFamily: "MS Sans Serif, sans-serif"
+                  }}>
+                    {/* Retro Blue Loader */}
+                    <div style={{
+                      width: 16,
+                      height: 16,
+                      background: "linear-gradient(45deg, #0080ff, #004080)",
+                      border: "1px inset #ffffff",
+                      borderRadius: 2,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      animation: "retroSpin 1s linear infinite",
+                      flexShrink: 0
+                    }}>
+                      <div style={{
+                        width: 8,
+                        height: 8,
+                        background: "#ffffff",
+                        borderRadius: "50%",
+                        animation: "retroPulse 0.8s ease-in-out infinite alternate"
+                      }} />
+                    </div>
+                    
+                    <span style={{ color: "#000080", fontWeight: "normal" }}>
+                      {messages[currentMessage]}
+                    </span>
+                  </div>
+                )}
               </>
             )}
           </div>
         </div>
       </div>
+      
+      {/* CSS Animations */}
+      <style jsx>{`
+        @keyframes retroSpin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes retroPulse {
+          0% { opacity: 0.6; transform: scale(0.8); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+      `}</style>
     </div>
   );
 }

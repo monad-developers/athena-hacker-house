@@ -160,6 +160,7 @@ export default function Page() {
   const [showCamera, setShowCamera] = useState(false);
   const [activeTab, setActiveTab] = useState("swap"); // "swap" | "corn"
   const [showSizeNotification, setShowSizeNotification] = useState(false);
+  const [showLiarNotification, setShowLiarNotification] = useState(false);
 
 
 
@@ -368,7 +369,12 @@ export default function Page() {
             )}
 
             {startMenuOpen && <StartMenu95 onMenuItemClick={() => setStartMenuOpen(false)} />}
-            {showCamera && <CameraWindow95 onClose={() => setShowCamera(false)} />}
+            {showCamera && <CameraWindow95 onClose={(action) => {
+              setShowCamera(false);
+              if (action === "showNotification") {
+                setShowLiarNotification(true);
+              }
+            }} />}
             <Taskbar95
               activeTitle="Dickswap"
               showButton={winState !== "closed"}
@@ -391,6 +397,13 @@ export default function Page() {
               message="you are not long enough to swap!"
               emoji="😢"
               onClose={() => setShowSizeNotification(false)}
+            />
+            <RetroNotification
+              show={showLiarNotification}
+              title="Verification Failed"
+              message="you are a liar, dont lie about size. you are rugged!"
+              emoji="🚫"
+              onClose={() => setShowLiarNotification(false)}
             />
           </div>
         );
