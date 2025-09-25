@@ -157,6 +157,7 @@ export default function Page() {
   const [sliderValue, setSliderValue] = useState(0);
   const [monAmount, setMonAmount] = useState("100");
   const [showCamera, setShowCamera] = useState(false);
+  const [activeTab, setActiveTab] = useState("swap"); // "swap" | "corn"
 
 
 
@@ -277,65 +278,86 @@ export default function Page() {
               >
                 <div style={{ background: "#ffffff", border: "2px inset #a0a0a0", padding: 12, height: "100%" }}>
                   <div style={{ marginBottom: 12, display: "flex", gap: 8 }}>
-                    <Button95>Swap</Button95>
-                    <Button95 disabled>Pool</Button95>
-                    <Button95 disabled>Stake</Button95>
-                  </div>
-                  <SwapInterface95
-                    monAmount={monAmount}
-                    onMonAmountChange={setMonAmount}
-                    tokenAmount={tokenAmount ? formatEther(tokenAmount) : "0.00"}
-                    isSwapReversed={isSwapReversed}
-                    onSwapReverse={() => {
-                      setIsSwapReversed(!isSwapReversed);
-                      setMonAmount(""); // Clear amount when switching
-                    }}
-                    userTokenBalance={userTokenBalance}
-                  />                  <Slider95
-                    title="choose your size (slippage)"
-                    value={sliderValue}
-                    onChange={e => setSliderValue(parseInt(e.target.value, 10))}
-                    min={0}
-                    max={16}
-                    unit="in"
-                  />
-                  <div style={{ display: "flex", justifyContent: "center", marginTop: 20 }}>
-                    <Button95
-                      disabled={
-                        !connected ||
-                        sliderValue === 0 ||
-                        !monAmount ||
-                        parseFloat(monAmount) <= 0 ||
-                        isPending ||
-                        isConfirming ||
-                        (isSwapReversed && userTokenBalance && parseFloat(monAmount) > parseFloat(formatEther(userTokenBalance)))
-                      }
-                      style={{
-                        padding: "8px 24px",
-                        fontSize: 14,
-                        fontWeight: "bold",
-                        backgroundColor: (!connected || sliderValue === 0 || !monAmount || parseFloat(monAmount) <= 0 || isPending || isConfirming)
-                          ? "#e0e0e0"
-                          : "#90EE90"
-                      }}
-                      onClick={() => {
-                        if (sliderValue > 6) {
-                          setShowCamera(true);
-                        } else {
-                          handleSwap(connected);
-                        }
+                    <Button95 
+                      onClick={() => setActiveTab("swap")}
+                      style={{ 
+                        backgroundColor: activeTab === "swap" ? "#d0d0d0" : "#f5d5e5",
+                        border: activeTab === "swap" ? "2px inset #a0a0a0" : "2px outset #ffffff"
                       }}
                     >
-                      {!connected
-                        ? 'Connect Wallet'
-                        : isPending
-                          ? 'Confirming...'
-                          : isConfirming
-                            ? 'Processing...'
-                            : 'Swap'
-                      }
+                      Swap
+                    </Button95>
+                    <Button95 
+                      onClick={() => setActiveTab("corn")}
+                      style={{ 
+                        backgroundColor: activeTab === "corn" ? "#d0d0d0" : "#f5d5e5",
+                        border: activeTab === "corn" ? "2px inset #a0a0a0" : "2px outset #ffffff"
+                      }}
+                    >
+                      Corn💦
                     </Button95>
                   </div>
+                  {activeTab === "swap" && (
+                    <>
+                      <SwapInterface95
+                        monAmount={monAmount}
+                        onMonAmountChange={setMonAmount}
+                        tokenAmount={tokenAmount ? formatEther(tokenAmount) : "0.00"}
+                        isSwapReversed={isSwapReversed}
+                        onSwapReverse={() => {
+                          setIsSwapReversed(!isSwapReversed);
+                          setMonAmount(""); // Clear amount when switching
+                        }}
+                        userTokenBalance={userTokenBalance}
+                      />
+                      <Slider95
+                        title="choose your size (slippage)"
+                        value={sliderValue}
+                        onChange={e => setSliderValue(parseInt(e.target.value, 10))}
+                        min={0}
+                        max={16}
+                        unit="in"
+                      />
+                      <div style={{ display: "flex", justifyContent: "center", marginTop: 20 }}>
+                        <Button95
+                          disabled={
+                            !connected ||
+                            sliderValue === 0 ||
+                            !monAmount ||
+                            parseFloat(monAmount) <= 0 ||
+                            isPending ||
+                            isConfirming ||
+                            (isSwapReversed && userTokenBalance && parseFloat(monAmount) > parseFloat(formatEther(userTokenBalance)))
+                          }
+                          style={{
+                            padding: "8px 24px",
+                            fontSize: 14,
+                            fontWeight: "bold",
+                            backgroundColor: (!connected || sliderValue === 0 || !monAmount || parseFloat(monAmount) <= 0 || isPending || isConfirming)
+                              ? "#e0e0e0"
+                              : "#90EE90"
+                          }}
+                          onClick={() => {
+                            if (sliderValue > 6) {
+                              setShowCamera(true);
+                            } else {
+                              handleSwap(connected);
+                            }
+                          }}
+                        >
+                          {!connected
+                            ? 'Connect Wallet'
+                            : isPending
+                              ? 'Confirming...'
+                              : isConfirming
+                                ? 'Processing...'
+                                : 'Swap'
+                          }
+                        </Button95>
+                      </div>
+                    </>
+                  )}
+                  {activeTab === "corn" && <CornInterface95 />}
                 </div>
               </Window95>
             )}
@@ -668,6 +690,36 @@ function Menu95Item({ label, onClick }) {
   );
 }
 
+
+function CornInterface95() {
+  return (
+    <div style={{ 
+      display: "flex", 
+      flexDirection: "column", 
+      alignItems: "center", 
+      justifyContent: "center", 
+      height: "85%",
+      fontFamily: "Tahoma, Verdana, sans-serif",
+    }}>
+      <div style={{
+        border: "2px inset #a0a0a0",
+        padding: 8,
+        background: "#ffffff",
+        borderRadius: 4
+    }}>
+        <img 
+          src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2FkeGE5c3dzamFhd2hzdWY3NTl6cjZsZWtudmV1ZnZhamR3cnBmbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/EHQvTHs3r8eSQyL8R1/giphy.gif"
+          alt="Corn GIF"
+          style={{
+            maxWidth: "100%",
+            maxHeight: "250px",
+            display: "block"
+          }}
+        />
+      </div>
+    </div>
+  );
+}
 
 function SwapInterface95({ monAmount, onMonAmountChange, tokenAmount, isSwapReversed, onSwapReverse, userTokenBalance }) {
   const fromToken = isSwapReversed ? 'TOKEN' : 'ETH';
