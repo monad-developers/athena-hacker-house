@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+:root {
+  --background: #070b17;
+  --foreground: #e6edf6;
+  --muted: #9aa7bd;
+  --card: rgba(12, 16, 32, 0.6);
+  --border: rgba(255, 255, 255, 0.08);
+  --ring: #22e1ff;
+  --accent: #4c94ff;
+  --accent-2: #1e62f5;
+  --gray-alpha-100: rgba(255, 255, 255, 0.04);
+  --gray-alpha-200: rgba(255, 255, 255, 0.10);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #070b17;
+    --foreground: #e6edf6;
+  }
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+:where(button, a, input, select, textarea):focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+  border-radius: 10px;
+}
+
+.glass-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+}
