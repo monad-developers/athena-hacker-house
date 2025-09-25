@@ -1,0 +1,200 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "1955 Medium";
+  src: url("/1955 Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background-image: url("/visax.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--foreground);
+  font-family: "1955 Medium", Arial, Helvetica, sans-serif;
+}
+
+/* Dark overlay for better contrast */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
+  z-index: -1;
+}
+
+/* Stars background effect */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(2px 2px at 20px 30px, #ffffff, transparent),
+    radial-gradient(2px 2px at 40px 70px, #ffffff, transparent),
+    radial-gradient(1px 1px at 90px 40px, #ffffff, transparent),
+    radial-gradient(1px 1px at 130px 80px, #ffffff, transparent),
+    radial-gradient(2px 2px at 160px 30px, #ffffff, transparent),
+    radial-gradient(1px 1px at 200px 90px, #ffffff, transparent),
+    radial-gradient(1px 1px at 240px 50px, #ffffff, transparent),
+    radial-gradient(2px 2px at 280px 10px, #ffffff, transparent),
+    radial-gradient(1px 1px at 320px 70px, #ffffff, transparent),
+    radial-gradient(1px 1px at 360px 40px, #ffffff, transparent),
+    radial-gradient(2px 2px at 20px 120px, #ffffff, transparent),
+    radial-gradient(1px 1px at 60px 160px, #ffffff, transparent),
+    radial-gradient(1px 1px at 100px 180px, #ffffff, transparent),
+    radial-gradient(2px 2px at 140px 140px, #ffffff, transparent),
+    radial-gradient(1px 1px at 180px 190px, #ffffff, transparent),
+    radial-gradient(1px 1px at 220px 120px, #ffffff, transparent),
+    radial-gradient(2px 2px at 260px 170px, #ffffff, transparent),
+    radial-gradient(1px 1px at 300px 150px, #ffffff, transparent),
+    radial-gradient(1px 1px at 340px 200px, #ffffff, transparent),
+    radial-gradient(1px 1px at 380px 130px, #ffffff, transparent);
+  background-repeat: repeat;
+  background-size: 400px 250px;
+  animation: sparkle 3s linear infinite;
+  opacity: 0.4;
+  z-index: -1;
+}
+
+@keyframes sparkle {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spinSlow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-spin-slow {
+  animation: spinSlow 8s linear infinite;
+}
+
+/* Custom glassmorphism utilities with pastel colors */
+.glass-card {
+  background: rgba(230, 220, 255, 0.08) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(230, 220, 255, 0.12) !important;
+}
+
+.glass-dark {
+  background: rgba(200, 185, 255, 0.06) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(200, 185, 255, 0.08) !important;
+}
+
+.glass-button {
+  background: rgba(255, 230, 245, 0.08) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 230, 245, 0.15) !important;
+}
+
+.glass-steps {
+  background: rgba(240, 255, 250, 0.1) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(240, 255, 250, 0.15) !important;
+}
+
+/* Pastel color utilities */
+.text-pastel-purple {
+  color: #c8a8e9;
+}
+.text-pastel-pink {
+  color: #f8bbd9;
+}
+.text-pastel-blue {
+  color: #a8d8ea;
+}
+.text-pastel-green {
+  color: #a8e6cf;
+}
+.text-pastel-yellow {
+  color: #f7dc6f;
+}
+.text-pastel-orange {
+  color: #fdcb6e;
+}
+.text-pastel-mint {
+  color: #81ecec;
+}
+.text-pastel-lavender {
+  color: #dda0dd;
+}
+
+.bg-pastel-purple {
+  background-color: #c8a8e9;
+}
+.bg-pastel-pink {
+  background-color: #f8bbd9;
+}
+.bg-pastel-blue {
+  background-color: #a8d8ea;
+}
+.bg-pastel-green {
+  background-color: #a8e6cf;
+}
+.bg-pastel-yellow {
+  background-color: #f7dc6f;
+}
+.bg-pastel-orange {
+  background-color: #fdcb6e;
+}
+.bg-pastel-mint {
+  background-color: #81ecec;
+}
+.bg-pastel-lavender {
+  background-color: #dda0dd;
+}
