@@ -4,6 +4,37 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useEffect, useState } from "react";
 import CameraWindow95 from "./CameraWindow95";
 
+
+import { useWriteContract, useReadContract, useWaitForTransactionReceipt } from 'wagmi';
+import { parseEther, formatEther } from 'viem';
+
+// 2. Add this ABI constant (after the imports, before the Page component)
+const BONDING_CURVE_ABI = [
+  {
+    "inputs": [{ "internalType": "uint256", "name": "ethAmount", "type": "uint256" }],
+    "name": "calculateBuyReturn",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "buy",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "calculateCurrentPrice",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  }
+];
+
+const CONTRACT_ADDRESS = "0xC7B6788316A38aF04e7F1BE09BfFA63575dD8D64";
+
 export default function Page() {
   const wallpaperUrl = "https://ih1.redbubble.net/image.2287184997.2100/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg";
   const [winState, setWinState] = useState("closed"); // open | minimized | closed
@@ -11,6 +42,47 @@ export default function Page() {
   const [sliderValue, setSliderValue] = useState(0);
   const [monAmount, setMonAmount] = useState("100");
   const [showCamera, setShowCamera] = useState(false);
+
+
+  const { writeContract, data: hash, isPending, error } = useWriteContract();
+  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
+
+
+  const { data: tokenAmount } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: BONDING_CURVE_ABI,
+    functionName: 'calculateBuyReturn',
+    args: monAmount && parseFloat(monAmount) > 0 ? [parseEther(monAmount)] : [0n],
+    query: {
+      enabled: monAmount && parseFloat(monAmount) > 0,
+    },
+  });
+
+  const handleSwap = async (connected) => {
+    console.log("handleSwap called", { connected, monAmount, sliderValue });
+
+    if (!connected) {
+      console.log("Wallet not connected");
+      return;
+    }
+
+    if (!monAmount || parseFloat(monAmount) <= 0) {
+      console.log("Invalid amount:", monAmount);
+      return;
+    }
+
+    try {
+      console.log("Attempting to write contract with amount:", monAmount);
+      writeContract({
+        address: CONTRACT_ADDRESS,
+        abi: BONDING_CURVE_ABI,
+        functionName: 'buy',
+        value: parseEther(monAmount),
+      });
+    } catch (err) {
+      console.error('Transaction failed:', err);
+    }
+  };
 
   return (
     <ConnectButton.Custom>
@@ -52,7 +124,7 @@ export default function Page() {
                     <Button95 disabled>Pool</Button95>
                     <Button95 disabled>Stake</Button95>
                   </div>
-                  <SwapInterface95 
+                  <SwapInterface95
                     monAmount={monAmount}
                     onMonAmountChange={setMonAmount}
                   />
@@ -65,16 +137,18 @@ export default function Page() {
                     unit="in"
                   />
                   <div style={{ display: "flex", justifyContent: "center", marginTop: 20 }}>
-                    <Button95 
-                      disabled={sliderValue === 0} 
+                    <Button95
+                      disabled={sliderValue === 0}
                       style={{ padding: "8px 24px", fontSize: 14, fontWeight: "bold" }}
                       onClick={() => {
                         if (sliderValue > 6) {
                           setShowCamera(true);
+                        } else {
+                          handleSwap(connected)
                         }
                       }}
                     >
-                      Swap
+                      Swap!
                     </Button95>
                   </div>
                 </div>
@@ -434,9 +508,9 @@ function SwapInterface95({ monAmount, onMonAmountChange }) {
         </div>
 
         {/* Arrow */}
-        <div style={{ 
-          display: "flex", 
-          alignItems: "center", 
+        <div style={{
+          display: "flex",
+          alignItems: "center",
           justifyContent: "center",
           width: 40,
           height: 40,
@@ -493,7 +567,7 @@ function Slider95({ title, value, min, max, unit, onChange }) {
           style={{
             flexGrow: 1,
             cursor: "pointer",
-            "--thumb-size": `${thumbSize+2}px`,
+            "--thumb-size": `${thumbSize + 2}px`,
           }}
         />
         <div
