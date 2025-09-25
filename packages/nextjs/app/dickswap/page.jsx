@@ -151,16 +151,129 @@ function TransactionNotification({ hash, onClose }) {
   );
 }
 
+function SuccessWindow({ onClose }) {
+  return (
+    <div
+      style={{
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: 400,
+        height: 300,
+        background: "#f5d5e5",
+        border: "2px outset #ffffff",
+        boxShadow: "3px 3px 0 #000000a0",
+        zIndex: 150,
+        fontFamily: "Tahoma, Verdana, sans-serif",
+      }}
+    >
+      {/* Title bar */}
+      <div style={{
+        height: 28,
+        background: "linear-gradient(90deg, #8a2be2, #ff1493)",
+        color: "#ffffff",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "0 6px",
+        borderBottom: "2px solid #000",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <div style={{
+            width: 16,
+            height: 16,
+            background: "#ffffff",
+            border: "1px solid #000"
+          }} />
+          <span style={{ fontWeight: "bold", fontSize: 13 }}>Success!</span>
+        </div>
+        <button
+          onClick={onClose}
+          style={{
+            width: 22,
+            height: 18,
+            background: "#ff4f4f",
+            color: "#fff",
+            border: "2px outset #ffffff",
+            fontSize: 12,
+            cursor: "pointer",
+            padding: 0
+          }}
+        >
+          X
+        </button>
+      </div>
+
+      {/* Content */}
+      <div style={{ 
+        padding: 12, 
+        height: "calc(100% - 28px)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "#ffffff",
+        border: "2px inset #a0a0a0",
+        margin: 6
+      }}>
+        <div style={{ 
+          marginBottom: 16, 
+          color: "#000", 
+          fontWeight: "bold",
+          fontSize: 16,
+          textAlign: "center"
+        }}>
+          You are good 💦
+        </div>
+        
+        <div style={{
+          border: "2px inset #a0a0a0",
+          padding: 8,
+          background: "#ffffff",
+          borderRadius: 4,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center"
+        }}>
+          <img 
+            src="/aura.gif"
+            alt="Success Aura"
+            style={{
+              maxWidth: "200px",
+              maxHeight: "150px",
+              display: "block"
+            }}
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'block';
+            }}
+          />
+          <div style={{
+            display: 'none',
+            color: '#666',
+            fontStyle: 'italic',
+            textAlign: 'center'
+          }}>
+            ✨ Success Aura ✨
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Page() {
   const wallpaperUrl = "https://ih1.redbubble.net/image.2287184997.2100/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg";
   const [winState, setWinState] = useState("closed"); // open | minimized | closed
   const [startMenuOpen, setStartMenuOpen] = useState(false);
   const [sliderValue, setSliderValue] = useState(0);
-  const [monAmount, setMonAmount] = useState("100");
+  const [monAmount, setMonAmount] = useState("1");
   const [showCamera, setShowCamera] = useState(false);
   const [activeTab, setActiveTab] = useState("swap"); // "swap" | "corn"
   const [showSizeNotification, setShowSizeNotification] = useState(false);
   const [showLiarNotification, setShowLiarNotification] = useState(false);
+  const [showSuccessWindow, setShowSuccessWindow] = useState(false);
 
 
 
@@ -204,12 +317,15 @@ export default function Page() {
 
         useEffect(() => {
           if (isConfirmed && hash) {
+            // Show success window first
+            setShowSuccessWindow(true);
+            
             setTxNotification({
               hash: hash,
               timestamp: Date.now()
             });
 
-            // Auto-hide after 10 seconds
+            // Auto-hide notification after 10 seconds
             const timer = setTimeout(() => {
               setTxNotification(null);
             }, 10000);
@@ -405,6 +521,11 @@ export default function Page() {
               emoji="🚫"
               onClose={() => setShowLiarNotification(false)}
             />
+            {showSuccessWindow && (
+              <SuccessWindow
+                onClose={() => setShowSuccessWindow(false)}
+              />
+            )}
           </div>
         );
       }}
@@ -685,7 +806,7 @@ function StartMenu95({ onMenuItemClick }) {
           fontWeight: "bold",
         }}
       >
-        DickSwap
+        DickSwap 2000
       </div>
       <div style={{ flex: 1, padding: "4px 0" }}>
         <Menu95Item label="Programs" />
@@ -753,8 +874,8 @@ function CornInterface95() {
 }
 
 function SwapInterface95({ monAmount, onMonAmountChange, tokenAmount, isSwapReversed, onSwapReverse, userTokenBalance }) {
-  const fromToken = isSwapReversed ? 'TOKEN' : 'ETH';
-  const toToken = isSwapReversed ? 'ETH' : 'TOKEN';
+  const fromToken = isSwapReversed ? 'TOKEN' : 'MON';
+  const toToken = isSwapReversed ? 'MON' : 'TOKEN';
   const maxAmount = isSwapReversed && userTokenBalance ? formatEther(userTokenBalance) : null;
 
   return (
