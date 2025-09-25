@@ -35,6 +35,107 @@ const BONDING_CURVE_ABI = [
 
 const CONTRACT_ADDRESS = "0xC7B6788316A38aF04e7F1BE09BfFA63575dD8D64";
 
+function TransactionNotification({ hash, onClose }) {
+  const explorerUrl = `https://testnet.monadexplorer.com/tx/${hash}`;
+  const shortHash = `${hash.slice(0, 6)}...${hash.slice(-4)}`;
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        top: 20,
+        right: 20,
+        width: 320,
+        background: "#f5d5e5",
+        border: "2px outset #ffffff",
+        boxShadow: "3px 3px 0 #000000a0",
+        zIndex: 100,
+        fontFamily: "Tahoma, Verdana, sans-serif",
+        fontSize: 12,
+      }}
+    >
+      {/* Title bar */}
+      <div style={{
+        height: 24,
+        background: "linear-gradient(90deg, #8a2be2, #ff1493)",
+        color: "#ffffff",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "0 6px",
+        borderBottom: "1px solid #000",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <div style={{
+            width: 12,
+            height: 12,
+            background: "#ffffff",
+            border: "1px solid #000"
+          }} />
+          <span style={{ fontWeight: "bold", fontSize: 11 }}>Transaction Complete</span>
+        </div>
+        <button
+          onClick={onClose}
+          style={{
+            width: 16,
+            height: 14,
+            background: "#ff4f4f",
+            color: "#fff",
+            border: "1px outset #ffffff",
+            fontSize: 10,
+            cursor: "pointer",
+            padding: 0
+          }}
+        >
+          X
+        </button>
+      </div>
+
+      {/* Content */}
+      <div style={{ padding: 12 }}>
+        <div style={{ marginBottom: 8, color: "#000", fontWeight: "bold" }}>
+          Swap Successful! 🎉
+        </div>
+
+        <div style={{ marginBottom: 8, color: "#000" }}>
+          Transaction Hash:
+        </div>
+
+        <div style={{
+          padding: "4px 6px",
+          background: "#ffffff",
+          border: "1px inset #a0a0a0",
+          fontFamily: "Courier New, monospace",
+          fontSize: 10,
+          color: "#000",
+          marginBottom: 8,
+          wordBreak: "break-all"
+        }}>
+          {shortHash}
+        </div>
+
+        <div style={{ display: "flex", gap: 6 }}>
+          <Button95
+            style={{ fontSize: 10, padding: "4px 8px" }}
+            onClick={() => {
+              navigator.clipboard.writeText(hash);
+            }}
+          >
+            Copy Hash
+          </Button95>
+
+          <Button95
+            style={{ fontSize: 10, padding: "4px 8px", background: "#90EE90" }}
+            onClick={() => window.open(explorerUrl, '_blank')}
+          >
+            View on Explorer
+          </Button95>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Page() {
   const wallpaperUrl = "https://ih1.redbubble.net/image.2287184997.2100/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg";
   const [winState, setWinState] = useState("closed"); // open | minimized | closed
@@ -47,6 +148,8 @@ export default function Page() {
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
 
+  const [txNotification, setTxNotification] = useState(null);
+
 
   const { data: tokenAmount } = useReadContract({
     address: CONTRACT_ADDRESS,
@@ -57,6 +160,22 @@ export default function Page() {
       enabled: monAmount && parseFloat(monAmount) > 0,
     },
   });
+
+  useEffect(() => {
+    if (isConfirmed && hash) {
+      setTxNotification({
+        hash: hash,
+        timestamp: Date.now()
+      });
+
+      // Auto-hide after 10 seconds
+      const timer = setTimeout(() => {
+        setTxNotification(null);
+      }, 10000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isConfirmed, hash]);
 
   const handleSwap = async (connected) => {
     console.log("handleSwap called", { connected, monAmount, sliderValue });
@@ -167,6 +286,12 @@ export default function Page() {
                 setStartMenuOpen(prev => !prev);
               }}
             />
+            {txNotification && (
+              <TransactionNotification
+                hash={txNotification.hash}
+                onClose={() => setTxNotification(null)}
+              />
+            )}
           </div>
         );
       }}
