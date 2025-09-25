@@ -1,0 +1,36 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/YourContract.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface IERC20 {\n    function transfer(address to, uint256 amount) external returns (bool);\n    function transferFrom(address from, address to, uint256 amount) external returns (bool);\n    function balanceOf(address account) external view returns (uint256);\n}\n\ncontract SimpleSwap {\n    IERC20 public tokenA = IERC20(0xd161478cD39E2dec5E8e0B62de48Ce7C0a531fdE);\n    IERC20 public tokenB = IERC20(0xC3aF40042F3EcF76F6Bbd648219F6b9f91A17E0A);\n    \n    // 1:1 swap rate (both tokens have 6 decimals)\n    uint256 public constant SWAP_RATE = 1;\n    \n    event Swap(address indexed user, address indexed tokenIn, uint256 amountIn, uint256 amountOut);\n    \n    // Swap tokenA for tokenB\n    function swapAForB(uint256 amount) external {\n        require(amount > 0, \"Amount must be greater than 0\");\n        require(tokenB.balanceOf(address(this)) >= amount, \"Insufficient tokenB in contract\");\n        \n        tokenA.transferFrom(msg.sender, address(this), amount);\n        tokenB.transfer(msg.sender, amount);\n        \n        emit Swap(msg.sender, address(tokenA), amount, amount);\n    }\n    \n    // Swap tokenB for tokenA\n    function swapBForA(uint256 amount) external {\n        require(amount > 0, \"Amount must be greater than 0\");\n        require(tokenA.balanceOf(address(this)) >= amount, \"Insufficient tokenA in contract\");\n        \n        tokenB.transferFrom(msg.sender, address(this), amount);\n        tokenA.transfer(msg.sender, amount);\n        \n        emit Swap(msg.sender, address(tokenB), amount, amount);\n    }\n    \n    // Owner can deposit tokens (you need to approve this contract first)\n    function depositTokenA(uint256 amount) external {\n        require(amount > 0, \"Amount must be greater than 0\");\n        require(tokenA.balanceOf(msg.sender) >= amount, \"Insufficient token balance\");\n        \n        bool success = tokenA.transferFrom(msg.sender, address(this), amount);\n        require(success, \"Token transfer failed - check approval\");\n    }\n    \n    function depositTokenB(uint256 amount) external {\n        require(amount > 0, \"Amount must be greater than 0\");\n        require(tokenB.balanceOf(msg.sender) >= amount, \"Insufficient token balance\");\n        \n        bool success = tokenB.transferFrom(msg.sender, address(this), amount);\n        require(success, \"Token transfer failed - check approval\");\n    }\n    \n    // View functions\n    function getTokenABalance() external view returns (uint256) {\n        return tokenA.balanceOf(address(this));\n    }\n    \n    function getTokenBBalance() external view returns (uint256) {\n        return tokenB.balanceOf(address(this));\n    }\n}\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "evmVersion": "paris",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}
