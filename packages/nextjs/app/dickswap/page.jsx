@@ -3,6 +3,7 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useEffect, useState } from "react";
 import CameraWindow95 from "./CameraWindow95";
+import RetroNotification from "./RetroNotification";
 
 
 import { useWriteContract, useReadContract, useWaitForTransactionReceipt } from 'wagmi';
@@ -158,6 +159,7 @@ export default function Page() {
   const [monAmount, setMonAmount] = useState("100");
   const [showCamera, setShowCamera] = useState(false);
   const [activeTab, setActiveTab] = useState("swap"); // "swap" | "corn"
+  const [showSizeNotification, setShowSizeNotification] = useState(false);
 
 
 
@@ -256,14 +258,14 @@ export default function Page() {
         return (
           <div style={desktopStyle(wallpaperUrl)} onClick={() => setStartMenuOpen(false)}>
             <div style={iconAreaStyle}>
-              <DesktopIcon label="My Computer" />
-              <DesktopIcon label="Recycle Bin" />
-              <DesktopIcon label="Network" />
+              <DesktopIcon label="My Computer" emoji="💻" />
+              <DesktopIcon label="Recycle Bin" emoji="🗑️" />
+              <DesktopIcon label="Network" emoji="🌐" />
               <div onClick={() => setWinState("open")} style={{ cursor: "pointer" }}>
-                <DesktopIcon label="Dickswap" />
+                <DesktopIcon label="Dickswap" emoji="🍆" />
               </div>
               <div onClick={openConnectModal} style={{ cursor: "pointer" }}>
-                <DesktopIcon label="Connect Wallet" />
+                <DesktopIcon label="Wallet" emoji="👛" />
               </div>
             </div>
 
@@ -340,7 +342,10 @@ export default function Page() {
                           onClick={() => {
                             if (sliderValue > 6) {
                               setShowCamera(true);
-                            } else {
+                            }
+                             else if (sliderValue < 3 ) {
+                                setShowSizeNotification(true);
+                             } else {
                               handleSwap(connected);
                             }
                           }}
@@ -380,6 +385,13 @@ export default function Page() {
                 onClose={() => setTxNotification(null)}
               />
             )}
+            <RetroNotification
+              show={showSizeNotification}
+              title="Size Alert"
+              message="you are not long enough to swap!"
+              emoji="😢"
+              onClose={() => setShowSizeNotification(false)}
+            />
           </div>
         );
       }}
@@ -411,7 +423,7 @@ const iconAreaStyle = {
   zIndex: 2,
 };
 
-function DesktopIcon({ label }) {
+function DesktopIcon({ label, emoji }) {
   return (
     <div style={{ width: 90, textAlign: "center", color: "#ffffff", textShadow: "1px 1px 2px #000000" }}>
       <div
@@ -419,11 +431,17 @@ function DesktopIcon({ label }) {
           width: 48,
           height: 48,
           margin: "0 auto 6px auto",
-          background: "#ff69b4",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: 32,
           border: "2px outset #ffffff",
+          background: "rgba(245, 213, 229, 0.9)",
           boxShadow: "inset -2px -2px 0 #00000055, inset 2px 2px 0 #ffffffaa",
         }}
-      />
+      >
+        {emoji}
+      </div>
       <div style={{ fontFamily: "Tahoma, Verdana, sans-serif", fontSize: 12 }}>{label}</div>
     </div>
   );
