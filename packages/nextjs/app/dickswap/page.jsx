@@ -18,6 +18,13 @@ const BONDING_CURVE_ABI = [
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "uint256", "name": "tokenAmount", "type": "uint256" }],
+    "name": "calculateSellReturn",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "buy",
     "outputs": [],
@@ -25,8 +32,15 @@ const BONDING_CURVE_ABI = [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "calculateCurrentPrice",
+    "inputs": [{ "internalType": "uint256", "name": "tokenAmount", "type": "uint256" }],
+    "name": "sell",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "account", "type": "address" }],
+    "name": "balanceOf",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
@@ -145,63 +159,6 @@ export default function Page() {
   const [showCamera, setShowCamera] = useState(false);
 
 
-  const { writeContract, data: hash, isPending, error } = useWriteContract();
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
-
-  const [txNotification, setTxNotification] = useState(null);
-
-
-  const { data: tokenAmount } = useReadContract({
-    address: CONTRACT_ADDRESS,
-    abi: BONDING_CURVE_ABI,
-    functionName: 'calculateBuyReturn',
-    args: monAmount && parseFloat(monAmount) > 0 ? [parseEther(monAmount)] : [0n],
-    query: {
-      enabled: monAmount && parseFloat(monAmount) > 0,
-    },
-  });
-
-  useEffect(() => {
-    if (isConfirmed && hash) {
-      setTxNotification({
-        hash: hash,
-        timestamp: Date.now()
-      });
-
-      // Auto-hide after 10 seconds
-      const timer = setTimeout(() => {
-        setTxNotification(null);
-      }, 10000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isConfirmed, hash]);
-
-  const handleSwap = async (connected) => {
-    console.log("handleSwap called", { connected, monAmount, sliderValue });
-
-    if (!connected) {
-      console.log("Wallet not connected");
-      return;
-    }
-
-    if (!monAmount || parseFloat(monAmount) <= 0) {
-      console.log("Invalid amount:", monAmount);
-      return;
-    }
-
-    try {
-      console.log("Attempting to write contract with amount:", monAmount);
-      writeContract({
-        address: CONTRACT_ADDRESS,
-        abi: BONDING_CURVE_ABI,
-        functionName: 'buy',
-        value: parseEther(monAmount),
-      });
-    } catch (err) {
-      console.error('Transaction failed:', err);
-    }
-  };
 
   return (
     <ConnectButton.Custom>
@@ -213,6 +170,87 @@ export default function Page() {
             console.log("Connected wallet address:", account.address);
           }
         }, [connected, account]);
+
+        const { writeContract, data: hash, isPending, error } = useWriteContract();
+        const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
+
+        const [txNotification, setTxNotification] = useState(null);
+        const [isSwapReversed, setIsSwapReversed] = useState(false); // false = ETH->TOKEN, true = TOKEN->ETH
+
+
+        const { data: tokenAmount } = useReadContract({
+          address: CONTRACT_ADDRESS,
+          abi: BONDING_CURVE_ABI,
+          functionName: isSwapReversed ? 'calculateSellReturn' : 'calculateBuyReturn',
+          args: monAmount && parseFloat(monAmount) > 0 ? [parseEther(monAmount)] : [0n],
+          query: {
+            enabled: monAmount && parseFloat(monAmount) > 0,
+          },
+        });
+
+        const { data: userTokenBalance } = useReadContract({
+          address: CONTRACT_ADDRESS,
+          abi: BONDING_CURVE_ABI,
+          functionName: 'balanceOf',
+          args: account ? [account.address] : undefined,
+          query: {
+            enabled: !!account && isSwapReversed,
+          },
+        });
+
+        useEffect(() => {
+          if (isConfirmed && hash) {
+            setTxNotification({
+              hash: hash,
+              timestamp: Date.now()
+            });
+
+            // Auto-hide after 10 seconds
+            const timer = setTimeout(() => {
+              setTxNotification(null);
+            }, 10000);
+
+            return () => clearTimeout(timer);
+          }
+        }, [isConfirmed, hash]);
+
+        const handleSwap = async (connected) => {
+          console.log("handleSwap called", { connected, monAmount, sliderValue, isSwapReversed });
+
+          if (!connected) {
+            console.log("Wallet not connected");
+            return;
+          }
+
+          if (!monAmount || parseFloat(monAmount) <= 0) {
+            console.log("Invalid amount:", monAmount);
+            return;
+          }
+
+          try {
+            if (isSwapReversed) {
+              // Selling tokens for ETH
+              console.log("Attempting to sell tokens:", monAmount);
+              writeContract({
+                address: CONTRACT_ADDRESS,
+                abi: BONDING_CURVE_ABI,
+                functionName: 'sell',
+                args: [parseEther(monAmount)],
+              });
+            } else {
+              // Buying tokens with ETH
+              console.log("Attempting to buy tokens with ETH:", monAmount);
+              writeContract({
+                address: CONTRACT_ADDRESS,
+                abi: BONDING_CURVE_ABI,
+                functionName: 'buy',
+                value: parseEther(monAmount),
+              });
+            }
+          } catch (err) {
+            console.error('Transaction failed:', err);
+          }
+        };
 
         return (
           <div style={desktopStyle(wallpaperUrl)} onClick={() => setStartMenuOpen(false)}>
@@ -246,8 +284,14 @@ export default function Page() {
                   <SwapInterface95
                     monAmount={monAmount}
                     onMonAmountChange={setMonAmount}
-                  />
-                  <Slider95
+                    tokenAmount={tokenAmount ? formatEther(tokenAmount) : "0.00"}
+                    isSwapReversed={isSwapReversed}
+                    onSwapReverse={() => {
+                      setIsSwapReversed(!isSwapReversed);
+                      setMonAmount(""); // Clear amount when switching
+                    }}
+                    userTokenBalance={userTokenBalance}
+                  />                  <Slider95
                     title="choose your size (slippage)"
                     value={sliderValue}
                     onChange={e => setSliderValue(parseInt(e.target.value, 10))}
@@ -257,17 +301,39 @@ export default function Page() {
                   />
                   <div style={{ display: "flex", justifyContent: "center", marginTop: 20 }}>
                     <Button95
-                      disabled={sliderValue === 0}
-                      style={{ padding: "8px 24px", fontSize: 14, fontWeight: "bold" }}
+                      disabled={
+                        !connected ||
+                        sliderValue === 0 ||
+                        !monAmount ||
+                        parseFloat(monAmount) <= 0 ||
+                        isPending ||
+                        isConfirming ||
+                        (isSwapReversed && userTokenBalance && parseFloat(monAmount) > parseFloat(formatEther(userTokenBalance)))
+                      }
+                      style={{
+                        padding: "8px 24px",
+                        fontSize: 14,
+                        fontWeight: "bold",
+                        backgroundColor: (!connected || sliderValue === 0 || !monAmount || parseFloat(monAmount) <= 0 || isPending || isConfirming)
+                          ? "#e0e0e0"
+                          : "#90EE90"
+                      }}
                       onClick={() => {
                         if (sliderValue > 6) {
                           setShowCamera(true);
                         } else {
-                          handleSwap(connected)
+                          handleSwap(connected);
                         }
                       }}
                     >
-                      Swap!
+                      {!connected
+                        ? 'Connect Wallet'
+                        : isPending
+                          ? 'Confirming...'
+                          : isConfirming
+                            ? 'Processing...'
+                            : 'Swap'
+                      }
                     </Button95>
                   </div>
                 </div>
@@ -602,19 +668,30 @@ function Menu95Item({ label, onClick }) {
   );
 }
 
-function SwapInterface95({ monAmount, onMonAmountChange }) {
+
+function SwapInterface95({ monAmount, onMonAmountChange, tokenAmount, isSwapReversed, onSwapReverse, userTokenBalance }) {
+  const fromToken = isSwapReversed ? 'TOKEN' : 'ETH';
+  const toToken = isSwapReversed ? 'ETH' : 'TOKEN';
+  const maxAmount = isSwapReversed && userTokenBalance ? formatEther(userTokenBalance) : null;
+
   return (
     <div style={{ margin: "20px 0", fontFamily: "Tahoma, Verdana, sans-serif", fontSize: 12 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        {/* Left box - $MON */}
+        {/* Left box - From token */}
         <div style={{ flex: 1 }}>
-          <div style={{ marginBottom: 4, color: "#000", fontWeight: "bold" }}>$MON</div>
+          <div style={{ marginBottom: 4, color: "#000", fontWeight: "bold", display: "flex", justifyContent: "space-between" }}>
+            <span>{fromToken}</span>
+            {maxAmount && (
+              <span style={{ fontSize: 10, color: "#666" }}>
+                Balance: {parseFloat(maxAmount).toFixed(4)}
+              </span>
+            )}
+          </div>
           <input
             type="text"
             value={monAmount}
             onChange={(e) => {
               const value = e.target.value;
-              // Only allow numbers and decimal point
               if (value === '' || /^\d*\.?\d*$/.test(value)) {
                 onMonAmountChange(value);
               }
@@ -629,10 +706,27 @@ function SwapInterface95({ monAmount, onMonAmountChange }) {
               fontSize: 12,
               outline: "none",
             }}
+            placeholder="0.0"
           />
+          {maxAmount && (
+            <div style={{ marginTop: 4 }}>
+              <button
+                onClick={() => onMonAmountChange(maxAmount)}
+                style={{
+                  fontSize: 10,
+                  padding: "2px 6px",
+                  background: "#e0e0e0",
+                  border: "1px outset #a0a0a0",
+                  cursor: "pointer"
+                }}
+              >
+                MAX
+              </button>
+            </div>
+          )}
         </div>
 
-        {/* Arrow */}
+        {/* Swap button */}
         <div style={{
           display: "flex",
           alignItems: "center",
@@ -641,19 +735,29 @@ function SwapInterface95({ monAmount, onMonAmountChange }) {
           height: 40,
           marginTop: 16
         }}>
-          <div style={{
-            fontSize: 24,
-            color: "#8a2be2",
-            fontWeight: "bold",
-            textShadow: "1px 1px 0 #000",
-          }}>
-            →
-          </div>
+          <button
+            onClick={onSwapReverse}
+            style={{
+              fontSize: 16,
+              color: "#8a2be2",
+              fontWeight: "bold",
+              textShadow: "1px 1px 0 #000",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: "4px",
+              borderRadius: "4px",
+            }}
+            onMouseEnter={(e) => e.target.style.background = "#f0f0f0"}
+            onMouseLeave={(e) => e.target.style.background = "none"}
+          >
+            ⇄
+          </button>
         </div>
 
-        {/* Right box - $TOKEN */}
+        {/* Right box - To token */}
         <div style={{ flex: 1 }}>
-          <div style={{ marginBottom: 4, color: "#000", fontWeight: "bold" }}>$TOKEN</div>
+          <div style={{ marginBottom: 4, color: "#000", fontWeight: "bold" }}>{toToken}</div>
           <div
             style={{
               width: "100%",
@@ -666,12 +770,13 @@ function SwapInterface95({ monAmount, onMonAmountChange }) {
               minHeight: "16px",
             }}
           >
-            {monAmount && parseFloat(monAmount) > 0 ? (parseFloat(monAmount) * 1.23).toFixed(2) : "0.00"}
+            {tokenAmount && parseFloat(tokenAmount) > 0 ? parseFloat(tokenAmount).toFixed(6) : "0.00"}
           </div>
         </div>
       </div>
     </div>
   );
+
 }
 
 function Slider95({ title, value, min, max, unit, onChange }) {
