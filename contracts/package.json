@@ -1,0 +1,21 @@
+{
+    "name": "dice-bet-contracts",
+    "version": "1.0.0",
+    "description": "Smart contracts for BatMon dApp",
+    "main": "index.js",
+    "scripts": {
+        "compile": "hardhat compile",
+        "test": "hardhat test",
+        "deploy:monad": "hardhat run scripts/deploy.js --network monadTestnet",
+        "deploy:local": "hardhat run scripts/deploy.js --network localhost",
+        "test-deploy": "hardhat run scripts/test-deploy.js"
+    },
+    "devDependencies": {
+        "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+        "hardhat": "^2.22.0"
+    },
+    "dependencies": {
+        "@openzeppelin/contracts": "^4.9.0",
+        "dotenv": "^16.0.0"
+    }
+}
