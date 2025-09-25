@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:docs.metamask.io)",
+      "WebFetch(domain:0x.org)",
+      "WebFetch(domain:docs.monad.xyz)",
+      "Bash(npm install:*)",
+      "Bash(npx shadcn@latest add:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm run build-sensor-bridge:*)",
+      "Bash(./sensor-bridge --json)",
+      "Bash(npm run:*)",
+      "Bash(node:*)",
+      "Bash(lsof:*)",
+      "Bash(kill 23228)",
+      "Bash(kill:*)",
+      "Bash(chmod:*)",
+      "Bash(npx tsx:*)",
+      "Bash(find:*)",
+      "Bash(pkill:*)",
+      "WebFetch(domain:testnet.monadexplorer.com)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

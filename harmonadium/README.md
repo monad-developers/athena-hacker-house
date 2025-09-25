@@ -1,4 +1,3 @@
-
 # 🎵 Harmonad - The Musical DeFi Revolution 🎶
 
 > *When your MacBook lid becomes a trading instrument* 🎹💰
@@ -262,4 +261,3 @@ Now go forth and trade with the power of musical laptop angles! 🎵📐💎
 *Built with 💜 by devs who thought "what if trading was musical?" and then actually did it*
 
 **Remember**: Stay hydrated, touch grass occasionally, and may your angles always be stable! 🌱💧📐
->>>>>>> b802ac4 (feat: something)
