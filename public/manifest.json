@@ -1,0 +1,26 @@
+{
+  "name": "My Awesome PWA App",
+  "short_name": "PWA App",
+  "description": "Best PWA app in the world!",
+  "display": "standalone",
+  "orientation": "portrait",
+
+  "background_color": "#FFFFFF",
+  "start_url": "/",
+  "scope": "/",
+  "id": "/",
+  "icons": [
+    {
+      "src": "/icons/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
